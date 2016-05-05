@@ -13,6 +13,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 
 /**
  *
@@ -27,6 +35,7 @@ public class Helper {
     @output: null
     */ 
    public static void downloadFileByUrl(final String filename, final String urlString) throws MalformedURLException, IOException {
+        
         BufferedInputStream in = null;
         FileOutputStream fout = null;
         try {
@@ -49,45 +58,61 @@ public class Helper {
     }
    
    /*
-   
+   Read an given CSV file and parse into a List 
    @param: CSV file to be readed
-   @return: Array with the CSV data
+   @return: List with the CSV data
    */
-   public static String[][] readCsvFile(final String pathToCSV) {
-
-	String csvFile = System.getProperty("user.dir")+pathToCSV;
-	BufferedReader br = null;
-	String line = "";
-	String cvsSplitBy = ";";
-
-	try {
-
-		br = new BufferedReader(new FileReader(csvFile));
-		while ((line = br.readLine()) != null) {
-
-		        // use comma as separator
-			String[] country = line.split(cvsSplitBy);
-
-			System.out.println("Country [code= " + country[0] 
-                                 + " , name=" + country[1] + "]");
-
-		}
-
-	} catch (FileNotFoundException e) {
-		e.printStackTrace();
-	} catch (IOException e) {
-		e.printStackTrace();
-	} finally {
-		if (br != null) {
-			try {
-				br.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	System.out.println("Done");
-        return null;
+   public static List<String[]> readCsvFile(final String pathToCSV) {
+       
+    List<String[]> resultDataImport = new ArrayList<String[]>();
+    String csvFile = System.getProperty("user.dir")+"/"+pathToCSV;
+    BufferedReader br = null;
+    String cvsSplitBy = ";";
+    String line;
+        
+    try {
+        br = new BufferedReader(new FileReader(csvFile));
+        while ((line = br.readLine()) != null) {
+            String[] csvLineData = line.split(cvsSplitBy);
+            resultDataImport.add(csvLineData);
+        }
+    } catch (FileNotFoundException e) {
+            e.printStackTrace();
+    } catch (IOException e) {
+            e.printStackTrace();
+    } finally {
+        if (br != null) {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    return resultDataImport;
   }
+
+    /**
+     * Convert the date in format ddMMyyyy to Date
+     * @param String 
+     * @return Date
+     * @throws ParseException
+     */
+    public static Date convertStringToDate(String quotationDate) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        simpleDateFormat.setLenient(false);
+        return simpleDateFormat.parse(quotationDate);
+    }
+    
+    /**
+     * Format the givend date to the same format that the website's request
+     * @param Date
+     * @return Formated String in yyyyMMdd  
+     **/
+    public static String formatDateToCSVFileName(Date quotationDate) {
+        DateFormat df = new SimpleDateFormat("yyyyMMdd");
+        Calendar calendarQuestionDate =  Calendar.getInstance();
+        calendarQuestionDate.setTime(quotationDate);
+        return df.format(calendarQuestionDate.getTime());
+    }
 }
