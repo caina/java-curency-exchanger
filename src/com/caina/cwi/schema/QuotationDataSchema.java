@@ -7,13 +7,12 @@ package com.caina.cwi.schema;
 
 import com.caina.cwi.helper.Helper;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Date;
 
 /**
  *
- * @author web
+ * @author caina
  */
 public class QuotationDataSchema {
 
@@ -23,11 +22,9 @@ public class QuotationDataSchema {
 
     
     public void populateCSVListData(String[] csvLineData) throws ParseException {
-        
         this.setQuotationDate(Helper.convertStringToDate(csvLineData[0]));
         this.setCurrency(csvLineData[3]);
         this.setBuyingRate(Helper.stringToBigDecimal(csvLineData[4]));
-        System.out.println("com.caina.cwi.schema.QuotationDataSchema.populateCSVListData()");
     }
 
     public Date getQuotationDate() {
@@ -54,9 +51,8 @@ public class QuotationDataSchema {
         this.buyingRate = buyingRate;
     }
 
-    
-    
-
- 
-    
+    public boolean isCurrency(String currencyName) {
+        return getCurrency().equals(currencyName);
+    }
+  
 }

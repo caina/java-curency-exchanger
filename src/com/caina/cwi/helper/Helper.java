@@ -15,6 +15,8 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class Helper {
     @output: null
     */ 
    public static void downloadFileByUrl(final String filename, final String urlString) throws MalformedURLException, IOException {
-        
+        System.out.println(urlString);
         BufferedInputStream in = null;
         FileOutputStream fout = null;
         try {
@@ -117,7 +119,19 @@ public class Helper {
         return df.format(calendarQuestionDate.getTime());
     }
 
-    public static BigDecimal stringToBigDecimal(String bigDecimalString) {
-        return new BigDecimal(bigDecimalString.replace(",", "."));
+    //TODO REFATORAR!
+    public static BigDecimal stringToBigDecimal(String bigDecimalString) throws ParseException {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.');
+        symbols.setDecimalSeparator(',');
+        String pattern = "#,##0.0#";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+        decimalFormat.setParseBigDecimal(true);
+
+        // parse the string
+        BigDecimal bigDecimal = (BigDecimal) decimalFormat.parse(bigDecimalString);
+    
+        return bigDecimal;
+        //return new BigDecimal(bigDecimalString.replace(",", "."));
     }
 }

@@ -23,16 +23,23 @@ public class Main {
     public static void main(String[] args) {
         // TODO code application logic here
         Currency c = new Currency();
+         try {
+            c.currencyQuotation("USD", "EUR", 100.00, "20/11/2014");
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            c.currencyQuotation("USD", "EUR", 100.00, "04/05/2016");
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         try {
             c.currencyQuotation("XCD", "PLN", 75.00, "30/04/2016");
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try {
-            c.currencyQuotation("USD", "EUR", 100.00, "20/11/2014");
-        } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
         
 
     }

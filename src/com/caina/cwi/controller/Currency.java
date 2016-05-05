@@ -34,10 +34,6 @@ public class Currency {
     private QuotationModel quotaionModel;
     private Date quotationDate;
     
-    public void Currency(){
-        downloadAndReadCSVFile();
-    }
-    
     /**
      * TODO 
      Handle the data
@@ -53,7 +49,10 @@ public class Currency {
         this.getLastWorkingDayQuotation(quotationDate);
         this.downloadAndReadCSVFile();
         this.quotaionModel.setQuotationCSVData(this.downloadAndReadCSVFile());
-        return null;
+        
+         BigDecimal exchange = this.quotaionModel.convertCurrency(currencyFrom, currencyTo, new BigDecimal(exchangeValue.toString()));
+         System.out.println(exchange.toString());
+         return null;
     }
     
     
