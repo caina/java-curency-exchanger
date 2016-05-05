@@ -6,8 +6,11 @@
 package com.caina.cwi.model;
 
 import com.caina.cwi.schema.QuotationDataSchema;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,7 +29,11 @@ public class QuotationModel {
         quotationDataSquemaList = new ArrayList();
         readedCsvFile.forEach((csvLineData) -> {
             quotationDataSchema = new QuotationDataSchema();
-            quotationDataSchema.populateCSVListData(csvLineData);
+            try {
+                quotationDataSchema.populateCSVListData(csvLineData);
+            } catch (ParseException ex) {
+                Logger.getLogger(QuotationModel.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
         });
     }

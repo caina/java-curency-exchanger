@@ -18,29 +18,44 @@ import java.util.Date;
 public class QuotationDataSchema {
 
     private Date       quotationDate;
-    private int        codMoeda;
-    private String     type;
-    private String     moeda;
-    private BigDecimal taxaCompa;
-    private BigDecimal taxaVenda;
-    private BigDecimal prioridadeCompra;
-    private BigDecimal paridadeVenda;
+    private String     currency;
+    private BigDecimal buyingRate;
+
     
     public void populateCSVListData(String[] csvLineData) throws ParseException {
         
-        this.quotationDate               = Helper.convertStringToDate(csvLineData[0]);
-        this.codMoeda           = Integer.parseInt(csvLineData[1]);
-        this.type               = csvLineData[2];
-        this.moeda              = csvLineData[3];
-        this.taxaCompa          = Helper.stringToBigDecimal(csvLineData[4]);
-        this.taxaVenda          = Helper.stringToBigDecimal(csvLineData[5]);
-        this.prioridadeCompra   = Helper.stringToBigDecimal(csvLineData[6]);
-        this.paridadeVenda      = Helper.stringToBigDecimal(csvLineData[7]);
-        
+        this.setQuotationDate(Helper.convertStringToDate(csvLineData[0]));
+        this.setCurrency(csvLineData[3]);
+        this.setBuyingRate(Helper.stringToBigDecimal(csvLineData[4]));
         System.out.println("com.caina.cwi.schema.QuotationDataSchema.populateCSVListData()");
     }
 
+    public Date getQuotationDate() {
+        return quotationDate;
+    }
 
+    public void setQuotationDate(Date quotationDate) {
+        this.quotationDate = quotationDate;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public BigDecimal getBuyingRate() {
+        return buyingRate;
+    }
+
+    public void setBuyingRate(BigDecimal buyingRate) {
+        this.buyingRate = buyingRate;
+    }
+
+    
+    
 
  
     

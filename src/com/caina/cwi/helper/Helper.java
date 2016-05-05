@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -114,5 +115,9 @@ public class Helper {
         Calendar calendarQuestionDate =  Calendar.getInstance();
         calendarQuestionDate.setTime(quotationDate);
         return df.format(calendarQuestionDate.getTime());
+    }
+
+    public static BigDecimal stringToBigDecimal(String bigDecimalString) {
+        return new BigDecimal(bigDecimalString.replace(",", "."));
     }
 }
