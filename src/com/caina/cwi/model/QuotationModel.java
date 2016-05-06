@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.caina.cwi.model;
 
 import com.caina.cwi.schema.QuotationDataSchema;
@@ -16,7 +11,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author web
+ * @author caina
  */
 public class QuotationModel {
     
@@ -27,7 +22,7 @@ public class QuotationModel {
     private QuotationDataSchema quotationto;
     
     /*
-    
+    Receive the CSV file and convert to a list of Schemas
     @param List of strings 
     @return void
     **/
@@ -52,29 +47,32 @@ public class QuotationModel {
      * @param valueConvert
      * @return
      */
-    public BigDecimal convertCurrency(String currencyFrom, String currencyTo, BigDecimal valueConvert){
-        //pegar a moeda from
-        quotationFrom = getQuotationByCurrency(currencyFrom);
-        System.out.println(quotationFrom.getBuyingRate().toString());
-                
-        //pegar a moeda to
-        quotationto = getQuotationByCurrency(currencyTo);
-        System.out.println(quotationto.getBuyingRate().toString());
+    public BigDecimal convertCurrency(String currencyFrom, String currencyTo, BigDecimal valueConvert) throws Exception{
         
-        System.out.println(quotationFrom.getBuyingRate().divide(quotationto.getBuyingRate()).toString());
-        //converter
+        if(valueConvert.signum()  == -1){
+            throw new Exception("Value must be more than zero");
+        }
+        
+        quotationFrom = getQuotationByCurrency(currencyFrom);
+        quotationto   = getQuotationByCurrency(currencyTo);
         return valueConvert.multiply(
-                    quotationFrom.getBuyingRate().divide(quotationto.getBuyingRate(), 3, RoundingMode.CEILING)
+                    quotationFrom.getBuyingRate().divide(quotationto.getBuyingRate(), 7, RoundingMode.DOWN)
                 );
     }
     
-    public QuotationDataSchema getQuotationByCurrency(String currencyName){
+    /**
+     * Iteract with a list of Schemas to find an given currency, if no one found, throw exception 
+     * @param currencyName The name of a currency to look up
+     * @return Respective Quotation
+     * @throws Exception
+     */
+    public QuotationDataSchema getQuotationByCurrency(String currencyName) throws Exception{
         for(QuotationDataSchema quotationSchema : quotationDataSquemaList ){
             if(quotationSchema.isCurrency(currencyName)){
                 return quotationSchema;
             }
         }
-        return null;
+        throw new Exception("Currency not found");
     }
     
 }

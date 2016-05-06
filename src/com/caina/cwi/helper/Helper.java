@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -26,7 +27,8 @@ import java.util.List;
 
 
 /**
- *
+ * Class with statics methods to suply any simple task
+ * that coud be done with an external library
  * @author caina
  */
 public class Helper {
@@ -37,8 +39,7 @@ public class Helper {
     @param: name of the file, this indicate as well tha path where it will be downloaded
     @output: null
     */ 
-   public static void downloadFileByUrl(final String filename, final String urlString) throws MalformedURLException, IOException {
-        System.out.println(urlString);
+   public static void downloadFileByUrl(final String filename, final String urlString) throws MalformedURLException, IOException, Exception {
         BufferedInputStream in = null;
         FileOutputStream fout = null;
         try {
@@ -50,7 +51,9 @@ public class Helper {
             while ((count = in.read(data, 0, 1024)) != -1) {
                 fout.write(data, 0, count);
             }
-        } finally {
+        }catch(Exception e){
+            throw new Exception("The date is invalid");
+        }finally {
             if (in != null) {
                 in.close();
             }
@@ -67,7 +70,7 @@ public class Helper {
    */
    public static List<String[]> readCsvFile(final String pathToCSV) {
        
-    List<String[]> resultDataImport = new ArrayList<String[]>();
+    List<String[]> resultDataImport = new ArrayList<>();
     String csvFile = System.getProperty("user.dir")+"/"+pathToCSV;
     BufferedReader br = null;
     String cvsSplitBy = ";";
@@ -97,7 +100,7 @@ public class Helper {
 
     /**
      * Convert the date in format ddMMyyyy to Date
-     * @param String 
+     * @param quotationDate
      * @return Date
      * @throws ParseException
      */
@@ -109,7 +112,7 @@ public class Helper {
     
     /**
      * Format the givend date to the same format that the website's request
-     * @param Date
+     * @param quotationDate
      * @return Formated String in yyyyMMdd  
      **/
     public static String formatDateToCSVFileName(Date quotationDate) {
@@ -119,19 +122,22 @@ public class Helper {
         return df.format(calendarQuestionDate.getTime());
     }
 
-    //TODO REFATORAR!
+    /**
+     * Format a String in BRL to BigDecimal
+     * @param bigDecimalString with a BRL data
+     * @return BigDecimal formated
+     * @throws ParseException
+     */
     public static BigDecimal stringToBigDecimal(String bigDecimalString) throws ParseException {
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setGroupingSeparator('.');
-        symbols.setDecimalSeparator(',');
-        String pattern = "#,##0.0#";
-        DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
-        decimalFormat.setParseBigDecimal(true);
-
-        // parse the string
-        BigDecimal bigDecimal = (BigDecimal) decimalFormat.parse(bigDecimalString);
-    
-        return bigDecimal;
-        //return new BigDecimal(bigDecimalString.replace(",", "."));
+        DecimalFormatSymbols decimalFormatSymbol = new DecimalFormatSymbols();
+        decimalFormatSymbol.setGroupingSeparator('.');
+        decimalFormatSymbol.setDecimalSeparator(',');
+        
+        String bigDecimalPattern = "#,##0.0#";
+        
+        DecimalFormat bigDecimalFormat = new DecimalFormat(bigDecimalPattern, decimalFormatSymbol);
+        bigDecimalFormat.setParseBigDecimal(true);
+        
+        return (BigDecimal) bigDecimalFormat.parse(bigDecimalString);    
     }
 }
