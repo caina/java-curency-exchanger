@@ -134,4 +134,14 @@ public class Helper {
         
         return (BigDecimal) bigDecimalFormat.parse(bigDecimalString);    
     }
+    
+    /**
+     * Trim bigdecimal to any number of Decimals
+     * @param bigDecimalToConvert
+     * @param numberOfDecimals
+     * @return Bigdecimal 
+     */
+    public static BigDecimal trimBigDecimal(final BigDecimal bigDecimalToConvert, final int numberOfDecimals) {
+        return new BigDecimal(String.valueOf(bigDecimalToConvert)).setScale(numberOfDecimals, BigDecimal.ROUND_DOWN);
+    }
 }

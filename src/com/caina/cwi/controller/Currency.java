@@ -5,6 +5,8 @@ import com.caina.cwi.model.QuotationModel;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,7 +36,6 @@ public class Currency {
      * @throws Exception
      */
     public BigDecimal currencyQuotation(String currencyFrom, String currencyTo, Number exchangeValue, String quotationDate) throws Exception{
-        
         this.quotationModel = new QuotationModel();
         this.getLastWorkingDayQuotation(quotationDate);
            
@@ -44,7 +45,7 @@ public class Currency {
         
         this.quotationModel.setQuotationCSVData(this.downloadAndReadCSVFile());
         BigDecimal _exchangedNonFormated = this.quotationModel.convertCurrency(currencyFrom, currencyTo, new BigDecimal(exchangeValue.toString()));
-        return _exchangedNonFormated.setScale(3, RoundingMode.DOWN).setScale(2,RoundingMode.DOWN);
+        return Helper.trimBigDecimal(_exchangedNonFormated, 2);
     }
     
     /*
