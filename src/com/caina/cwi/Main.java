@@ -1,3 +1,6 @@
+/*
+    Repository at https://github.com/caina/java-curency-exchanger
+*/
 package com.caina.cwi;
 
 import com.caina.cwi.controller.Currency;
@@ -22,6 +25,12 @@ public class Main {
         
         try {
             System.out.println(currencyExchanger.currencyQuotation("USD", "EUR", 50, "07/04/2016"));
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            System.out.println(currencyExchanger.currencyQuotation("USD", "EUR", 50, "2016-04-02"));
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
